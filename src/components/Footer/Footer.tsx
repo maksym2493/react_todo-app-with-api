@@ -8,7 +8,7 @@ type Props = {
   activeCount: number;
   clearCompleted: () => void;
 
-  filter: Filter;
+  currentFilter: Filter;
   setFilter: (newFilter: Filter) => void;
 };
 
@@ -17,9 +17,11 @@ export const Footer: React.FC<Props> = React.memo(function Footer({
   activeCount,
   clearCompleted,
 
-  filter,
+  currentFilter,
   setFilter,
 }) {
+  const dataCy = ['FilterLinkAll', 'FilterLinkActive', 'FilterLinkCompleted'];
+
   return (
     <footer className="todoapp__footer" data-cy="Footer">
       <span className="todo-count" data-cy="TodosCounter">
@@ -27,36 +29,19 @@ export const Footer: React.FC<Props> = React.memo(function Footer({
       </span>
 
       <nav className="filter" data-cy="Filter">
-        <a
-          href="#/"
-          className={classNames('filter__link', { selected: filter === 'All' })}
-          data-cy="FilterLinkAll"
-          onClick={() => setFilter('All')}
-        >
-          All
-        </a>
-
-        <a
-          href="#/active"
-          className={classNames('filter__link', {
-            selected: filter === 'Active',
-          })}
-          data-cy="FilterLinkActive"
-          onClick={() => setFilter('Active')}
-        >
-          Active
-        </a>
-
-        <a
-          href="#/completed"
-          className={classNames('filter__link', {
-            selected: filter === 'Completed',
-          })}
-          data-cy="FilterLinkCompleted"
-          onClick={() => setFilter('Completed')}
-        >
-          Completed
-        </a>
+        {Object.values(Filter).map((filter, i) => (
+          <a
+            key={filter}
+            href="#/"
+            className={classNames('filter__link', {
+              selected: currentFilter === filter,
+            })}
+            data-cy={dataCy[i]}
+            onClick={() => setFilter(filter)}
+          >
+            {filter}
+          </a>
+        ))}
       </nav>
 
       <button

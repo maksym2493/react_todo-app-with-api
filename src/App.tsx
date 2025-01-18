@@ -27,7 +27,7 @@ export const App: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [showErrorMessage, setShowErrorMessage] = useState(false);
 
-  const [filter, setFilter] = useState<Filter>('All');
+  const [filter, setFilter] = useState<Filter>(Filter.all);
 
   const [processing, setProcessing] = useState<number[]>([]);
 
@@ -158,7 +158,7 @@ export const App: React.FC = () => {
             Object.assign(foundTodo, data);
             setState(prevState => prevState + 1);
 
-            if (filter !== 'All') {
+            if (filter !== Filter.all) {
               return [...prevTodos];
             }
           }
@@ -178,13 +178,13 @@ export const App: React.FC = () => {
   // #region filtering
   const filteredTodos = useMemo(() => {
     switch (filter) {
-      case 'All':
+      case Filter.all:
         return todos;
 
-      case 'Active':
+      case Filter.active:
         return todos.filter(todo => !todo.completed);
 
-      case 'Completed':
+      case Filter.completed:
         return todos.filter(todo => todo.completed);
     }
   }, [todos, filter]);
@@ -287,7 +287,7 @@ export const App: React.FC = () => {
             totalCount={todos.length}
             activeCount={activeCount}
             clearCompleted={deleteCompleted}
-            filter={filter}
+            currentFilter={filter}
             setFilter={setFilter}
           />
         )}
